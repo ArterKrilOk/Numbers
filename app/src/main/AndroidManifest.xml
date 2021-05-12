@@ -10,9 +10,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Numbers">
-        <activity android:name=".Activities.GameActivity"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.GameActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".Activities.MainActivity"
             android:screenOrientation="sensorPortrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

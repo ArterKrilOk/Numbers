@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Activities.MainActivity">
 
     <com.pixelswordgames.numbers.Views.AnimatedCharsView
         android:id="@+id/charsView"
@@ -43,7 +43,7 @@
         android:layout_below="@+id/titleView"
         android:layout_marginTop="0dp"
         android:layout_centerHorizontal="true"
-        android:text="lvl1"
+        android:text="@string/lvl"
         android:textColor="@color/white"
         android:textSize="32sp"/>
 

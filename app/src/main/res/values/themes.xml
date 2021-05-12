@@ -14,5 +14,6 @@
         <!-- Customize your theme here. -->
 
         <item name="android:windowFullscreen">true</item>
+        <item name="dialogCornerRadius">16dp</item>
     </style>
 </resources>

@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Numbers</string>
     <string name="play">play</string>
+    <string name="pause">pause</string>
+    <string name="exit">exit</string>
+    <string name="lvl">lvl1</string>
 </resources>
