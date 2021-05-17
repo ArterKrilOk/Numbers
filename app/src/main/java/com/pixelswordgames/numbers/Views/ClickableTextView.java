@@ -37,6 +37,7 @@ public class ClickableTextView extends AppCompatTextView {
                 break;
             case MotionEvent.ACTION_UP:
                 setTextColor(Color.WHITE);
+                performClick();
                 break;
         }
 

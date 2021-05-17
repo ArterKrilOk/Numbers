@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Numbers</string>
     <string name="play">play</string>
+
+    <string name="result_complete">Clear</string>
+    <string name="result_failed">Failed</string>
+    <string name="lvl">lvl%1$f</string>
+    <string name="result_time">Time: %1$d s</string>
+    <string name="result_continue">Continue</string>
 </resources>
