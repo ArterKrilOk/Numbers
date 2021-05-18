@@ -1,11 +1,11 @@
-package com.pixelswordgames.numbers.Activities;
+package com.pixelswordgames.numbers;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.pixelswordgames.numbers.R;
+import com.pixelswordgames.numbers.Activities.GameActivity;
 import com.pixelswordgames.numbers.Views.AnimatedCharsView;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,12 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
         animatedCharsView = findViewById(R.id.charsView);
 
-        findViewById(R.id.playBtn).setOnClickListener(v -> startGame());
-    }
-
-    private void startGame(){
-        Intent intent = new Intent(MainActivity.this, GameActivity.class);
-        startActivity(intent);
+        findViewById(R.id.playBtn).setOnClickListener(v -> startGame(1));
     }
 
     @Override
@@ -39,5 +34,11 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
 
         animatedCharsView.stop();
+    }
+
+    private void startGame(int lvl){
+        Intent intent = new Intent(MainActivity.this, GameActivity.class);
+        intent.putExtra("lvl", lvl);
+        startActivity(intent);
     }
 }

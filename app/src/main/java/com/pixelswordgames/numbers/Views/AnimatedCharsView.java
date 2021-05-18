@@ -58,7 +58,7 @@ public class AnimatedCharsView extends View {
         canvas.drawColor(Color.BLACK);
 
         if(chars.size() == 0)
-            createChars(canvas.getWidth(), canvas.getHeight());
+            createChars(getWidth(), getHeight());
 
         for(CharObj c : chars) {
             c.draw(canvas, paint);
@@ -73,7 +73,7 @@ public class AnimatedCharsView extends View {
             @Override
             public void run() {
                 while (isRunning) {
-                    update(0.1f);
+                    update();
                     invalidate();
                     try {
                         Thread.sleep(10);
@@ -94,9 +94,9 @@ public class AnimatedCharsView extends View {
         thread = null;
     }
 
-    private void update(float fElapse){
+    private void update(){
         for(CharObj c : chars) {
-            c.update(fElapse);
+            c.update((float) 0.1);
         }
     }
 
