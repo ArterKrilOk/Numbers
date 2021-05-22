@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pixelswordgames.numbers.R;
+import com.pixelswordgames.numbers.Views.SolutionView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,19 +20,19 @@ import java.util.Random;
 
 public class SolutionViewAdapter extends RecyclerView.Adapter<SolutionViewAdapter.SolutionViewHolder> {
     static class SolutionViewHolder extends RecyclerView.ViewHolder {
-        TextView textView;
+        SolutionView solutionView;
 
         public SolutionViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.textView);
+            solutionView = (SolutionView) itemView;
         }
 
-        void setSolution(Integer value){
-            textView.setText(value.toString());
+        void setSolution(String value){
+            solutionView.setSolution(value);
         }
     }
 
-    private List<Integer> solutions;
+    private List<String> solutions;
 
     public SolutionViewAdapter() {
         solutions = new ArrayList<>();
@@ -40,8 +41,8 @@ public class SolutionViewAdapter extends RecyclerView.Adapter<SolutionViewAdapte
     @NonNull
     @Override
     public SolutionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.solution_frame, parent, false);
-        return new SolutionViewHolder(view);
+        SolutionView solutionView = new SolutionView(parent.getContext());
+        return new SolutionViewHolder(solutionView);
     }
 
     @Override
@@ -54,21 +55,14 @@ public class SolutionViewAdapter extends RecyclerView.Adapter<SolutionViewAdapte
         return solutions.size();
     }
 
-    public void setSolutions(List<Integer> solutions) {
+    public void setSolutions(List<String> solutions) {
         this.solutions = solutions;
-        notifyDataSetChanged();
-    }
-
-    public void generateSolutions(Integer value){
-        solutions.clear();
-        solutions.add(value);
-        for(int  i = 0; i < 5; ++i)
-            solutions.add(value + new Random().nextInt(20) - 10);
         Collections.shuffle(solutions);
         notifyDataSetChanged();
     }
 
-    public int getSolution(int position){
+
+    public String getSolution(int position){
         return solutions.get(position);
     }
 }

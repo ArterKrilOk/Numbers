@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Numbers</string>
+    <string name="play">Играть</string>
+    <string name="result_complete">Успешно</string>
+    <string name="result_failed">Провалено</string>
+    <string name="lvl">lvl%1$d</string>
+    <string name="result_time">Время: %1$s секунд</string>
+    <string name="result_continue">Завершить</string>
+    <string name="result_ads">Продолжитьᴬᴰˢ</string>
+    <string name="exit">Выйти</string>
+    <string name="pause">Пауза</string>
+    <string name="best_time">Лучшее время %1$s сек.</string>
+    <string name="games_played">Сыграно %1$d раз</string>
+    <string name="loading">Загрузка</string>
+    <string name="updating">Обновление файлов</string>
+    <string name="connecting">Подключение к серверу</string>
+    <string name="getting_info">Получение инвормации</string>
+</resources>

@@ -1,0 +1,117 @@
+{
+  "version" : 1.0,
+  "updatedAt" : "22.05.2021",
+  "channel" : "main",
+  "levels" : [
+    {
+      "lvl" : 1,
+      "types" : "+",
+      "patterns" : [ "i+i" ],
+      "count" : 10,
+      "valuesTopLimit" : 10,
+      "valuesBottomLimit" : 0,
+      "time" : 20000,
+      "failedTime" : 1000,
+      "successTime" : 1000
+    },
+    {
+      "lvl" : 2,
+      "types" : "×",
+      "patterns" : [ "i×i" ],
+      "count" : 10,
+      "valuesTopLimit" : 10,
+      "valuesBottomLimit" : 0,
+      "time" : 20000,
+      "failedTime" : 1000,
+      "successTime" : 1000
+    },
+    {
+      "lvl" : 3,
+      "types" : "+",
+      "patterns" : [ "i+i" ],
+      "count" : 10,
+      "valuesTopLimit" : 15,
+      "valuesBottomLimit" : 0,
+      "time" : 20000,
+      "failedTime" : 1000,
+      "successTime" : 1000
+    },
+    {
+      "lvl" : 4,
+      "types" : "-",
+      "patterns" : [ "i-i" ],
+      "count" : 10,
+      "valuesTopLimit" : 10,
+      "valuesBottomLimit" : 0,
+      "time" : 20000,
+      "failedTime" : 1000,
+      "successTime" : 1000
+    },
+    {
+      "lvl" : 5,
+      "types" : "+",
+      "patterns" : [ "i+i+i" ],
+      "count" : 10,
+      "valuesTopLimit" : 15,
+      "valuesBottomLimit" : 0,
+      "time" : 20000,
+      "failedTime" : 1000,
+      "successTime" : 2000
+    },
+    {
+      "lvl" : 6,
+      "types" : "+-",
+      "patterns" : [ "i+i-i" ],
+      "count" : 10,
+      "valuesTopLimit" : 15,
+      "valuesBottomLimit" : 0,
+      "time" : 20000,
+      "failedTime" : 1000,
+      "successTime" : 2000
+    },
+    {
+      "lvl" : 7,
+      "types" : "+-",
+      "patterns" : [ "i-i+i" ],
+      "count" : 10,
+      "valuesTopLimit" : 15,
+      "valuesBottomLimit" : 0,
+      "time" : 20000,
+      "failedTime" : 1000,
+      "successTime" : 2000
+    },
+    {
+      "lvl" : 8,
+      "types" : "-",
+      "patterns" : [ "i-i-i" ],
+      "count" : 10,
+      "valuesTopLimit" : 15,
+      "valuesBottomLimit" : 0,
+      "time" : 20000,
+      "failedTime" : 1000,
+      "successTime" : 2000
+    },
+    {
+      "lvl" : 9,
+      "types" : "×",
+      "patterns" : [ "i×i" ],
+      "count" : 5,
+      "valuesTopLimit" : 10,
+      "valuesBottomLimit" : 0,
+      "time" : 5000,
+      "failedTime" : 2000,
+      "successTime" : 500
+    },
+    {
+      "lvl" : 10,
+      "types" : "×+-",
+      "patterns" : [ "i×i","i+i","i-i","i+i+i","i+i-i","i-i-i" ],
+      "count" : 10,
+      "valuesTopLimit" : 10,
+      "valuesBottomLimit" : 0,
+      "time" : 20000,
+      "failedTime" : 2000,
+      "successTime" : 1000
+    }
+  ]
+}

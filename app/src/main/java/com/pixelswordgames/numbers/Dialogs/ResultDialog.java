@@ -2,6 +2,8 @@ package com.pixelswordgames.numbers.Dialogs;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatDialog;
@@ -10,20 +12,18 @@ import com.pixelswordgames.numbers.R;
 
 public class ResultDialog extends AppCompatDialog {
 
-    private final boolean isWin;
-    private final long time;
+    private boolean isWin, adsClicked;
+    private long time;
+    private OnDialogClosedListener onDialogClosedListener;
 
-    public ResultDialog(Context context, boolean isWin, long time) {
-        super(context);
-        this.isWin = isWin;
-        this.time = time;
+    public ResultDialog(Context context) {
+        super(context, R.style.Theme_Numbers_Dialog);
+        setCancelable(false);
     }
 
     public ResultDialog(Context context, int theme) {
-        super(context, theme);
-
-        this.isWin = false;
-        this.time = 0;
+        super(context, R.style.Theme_Numbers_Dialog);
+        setCancelable(false);
     }
 
     public ResultDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
@@ -31,6 +31,7 @@ public class ResultDialog extends AppCompatDialog {
 
         this.isWin = false;
         this.time = 0;
+        setCancelable(false);
     }
 
     @Override
@@ -40,7 +41,45 @@ public class ResultDialog extends AppCompatDialog {
 
         findViewById(R.id.continueBtn).setOnClickListener(v -> dismiss());
         ((TextView) findViewById(R.id.resultView)).setText(isWin? R.string.result_complete : R.string.result_failed);
-        ((TextView) findViewById(R.id.textView)).setText(getContext().getString(R.string.result_time, time / 1000f));
+        findViewById(R.id.adsBtn).setVisibility(isWin? View.GONE : View.VISIBLE);
+        findViewById(R.id.adsBtn).setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.press_me));
+        ((TextView) findViewById(R.id.resultTimeView)).setText(getContext().getString(R.string.result_time, String.format("%.2f", time / 1000f)));
+
+        findViewById(R.id.continueBtn).setOnClickListener(v -> {
+            adsClicked = false;
+            dismiss();
+        });
+        findViewById(R.id.adsBtn).setOnClickListener(v -> {
+            adsClicked = true;
+            dismiss();
+        });
     }
 
+    public void setWin(boolean win) {
+        isWin = win;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+
+        if(onDialogClosedListener != null) {
+            if (!adsClicked)
+                onDialogClosedListener.onContinue(isWin);
+            else onDialogClosedListener.onADs();
+        }
+    }
+
+    public void setOnDialogClosedListener(OnDialogClosedListener onDialogClosedListener) {
+        this.onDialogClosedListener = onDialogClosedListener;
+    }
+
+    public interface OnDialogClosedListener {
+        void onContinue(boolean isWin);
+        void onADs();
+    }
 }

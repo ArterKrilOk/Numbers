@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "180381799134",
+    "project_id": "pixelswordgames-numbers",
+    "storage_bucket": "pixelswordgames-numbers.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:180381799134:android:b567bb883603d6a17d684f",
+        "android_client_info": {
+          "package_name": "com.pixelswordgames.numbers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "180381799134-bpgjn8qo9e5og6faamr6buislbrkceom.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClCPJjrQkLp4HIhmI_Ln9mTrviABh5l_0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "180381799134-bpgjn8qo9e5og6faamr6buislbrkceom.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

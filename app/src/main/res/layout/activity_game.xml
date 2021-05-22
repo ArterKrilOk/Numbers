@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,21 +11,33 @@
         android:layout_height="wrap_content"
         android:id="@+id/timeBarView"
         android:layout_centerHorizontal="true"
-        android:layout_margin="20dp" />
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"/>
+
+    <com.pixelswordgames.numbers.Views.TasksCountView
+        android:id="@+id/tasksCountView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/timeBarView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp" />
 
     <TextView
         android:id="@+id/taskView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/recyclerView"
-        android:layout_below="@+id/timeBarView"
+        android:layout_below="@+id/tasksCountView"
         android:layout_centerHorizontal="true"
         android:layout_margin="64dp"
         android:textAlignment="center"
         android:gravity="center"
         android:textAllCaps="true"
         android:textColor="@color/white"
-        android:textSize="30sp"
+        android:textSize="32sp"
         android:textStyle="bold"
         tools:text="10 + 1" />
 

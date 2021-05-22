@@ -72,9 +72,10 @@ public class TimeBarView extends View {
                         a = 0;
                         da = -da;
                     }
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        innerPaint.setColor(Color.argb((int)a,255,255,255));
-                    }
+
+                } else a = 255;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    innerPaint.setColor(Color.argb((int)a,255,255,255));
                 }
                 time += DELAY;
                 curMillis -= DELAY;

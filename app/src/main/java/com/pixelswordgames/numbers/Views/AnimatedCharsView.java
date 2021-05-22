@@ -36,11 +36,11 @@ public class AnimatedCharsView extends View {
     }
 
     private static final int MAX_CHARS = 70;
-    private static final String[] CHARS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "+", "*", "/", "=", "%", "(", "!", "(", ">", "<"};
+    private static final String[] CHARS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "+", "×", "/", "=", "%", "(", "!", "("};
     private List<CharObj> chars;
     private Paint paint;
     private Thread thread;
-    private boolean isRunning;
+    private boolean isRunning, isDrawing;
 
     private void init(){
         paint = new Paint();
@@ -53,6 +53,7 @@ public class AnimatedCharsView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        isDrawing = true;
         super.onDraw(canvas);
 
         canvas.drawColor(Color.BLACK);
@@ -63,6 +64,7 @@ public class AnimatedCharsView extends View {
         for(CharObj c : chars) {
             c.draw(canvas, paint);
         }
+        isDrawing = false;
     }
 
     public void start(){
@@ -73,7 +75,8 @@ public class AnimatedCharsView extends View {
             @Override
             public void run() {
                 while (isRunning) {
-                    update();
+                    if(!isDrawing)
+                        update();
                     invalidate();
                     try {
                         Thread.sleep(10);

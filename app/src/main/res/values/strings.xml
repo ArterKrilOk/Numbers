@@ -4,7 +4,17 @@
 
     <string name="result_complete">Clear</string>
     <string name="result_failed">Failed</string>
-    <string name="lvl">lvl%1$f</string>
-    <string name="result_time">Time: %1$d s</string>
-    <string name="result_continue">Continue</string>
+    <string name="lvl">lvl%1$d</string>
+    <string name="result_time">Time: %1$s seconds</string>
+    <string name="result_continue">Finish</string>
+    <string name="result_ads">Watch ADs</string>
+    <string name="exit">Exit</string>
+    <string name="pause">Pause</string>
+    <string name="best_time">Best time %1$s s</string>
+    <string name="games_played">Times played %1$d</string>
+
+    <string name="loading">Loading</string>
+    <string name="updating">Updating files</string>
+    <string name="connecting">Connecting to server</string>
+    <string name="getting_info">Getting version info</string>
 </resources>

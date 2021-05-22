@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pixelswordgames.numbers">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,10 +13,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Numbers">
         <activity
+            android:name=".Activities.MainActivity"
+            android:screenOrientation="sensorPortrait" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-1950508283527188~8083070545" />
+
+        <activity
             android:name=".Activities.GameActivity"
             android:screenOrientation="sensorPortrait" />
         <activity
-            android:name=".Activities.MainActivity"
+            android:name=".Activities.StartActivity"
             android:screenOrientation="sensorPortrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
