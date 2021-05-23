@@ -27,14 +27,15 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.internal.EverythingIsNonNull;
 
 public class GameUpdater {
     private static final String UpdateBaseUrl = "https://numbers.pixelsg.space/";
 
-    private Context context;
+    private final Context context;
     private OnUpdateListener onUpdateListener;
-    private LoadTask loadTask;
-    private ApiService apiServece;
+    private final LoadTask loadTask;
+    private final ApiService apiServece;
 
     public GameUpdater(Context context) {
         this.context = context;
@@ -59,6 +60,7 @@ public class GameUpdater {
 
         apiServece.getVersionData().enqueue(new Callback<Tasks>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<Tasks> call, Response<Tasks> response) {
                 if(onUpdateListener != null) {
                     if (response.isSuccessful() && response.body() != null) {
@@ -70,6 +72,7 @@ public class GameUpdater {
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<Tasks> call, Throwable t) {
                 if(onUpdateListener != null)
                     onUpdateListener.onUpdateFinished(false);

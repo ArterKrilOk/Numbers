@@ -5,13 +5,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
 import com.pixelswordgames.numbers.Adapters.LevelPagerAdapter;
@@ -20,11 +15,8 @@ import com.pixelswordgames.numbers.Game.Tasks;
 import com.pixelswordgames.numbers.R;
 import com.pixelswordgames.numbers.Views.AnimatedCharsView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-
-import static com.pixelswordgames.numbers.Utils.ExpressionsUtils.formatDouble;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,9 +28,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        List<String> testDeviceIds = Arrays.asList("72D76300F72A9B7A1E187A708019B8E6");
+        List<String> testDeviceIds = Collections.singletonList("72D76300F72A9B7A1E187A708019B8E6");
         RequestConfiguration configuration =
-                new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
+                new RequestConfiguration
+                    .Builder()
+                    .setTestDeviceIds(testDeviceIds)
+                    .build();
         MobileAds.setRequestConfiguration(configuration);
 
         animatedCharsView = findViewById(R.id.charsView);
@@ -57,7 +52,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 if(position + 1 > DBLab.get(MainActivity.this).getLastLvl())
-                    levelPager.setCurrentItem(DBLab.get(MainActivity.this).getLastLvl(), true);
+                    levelPager.setCurrentItem(
+                            DBLab.get(MainActivity.this).getLastLvl(),
+                            true
+                    );
             }
 
             @Override
@@ -83,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
 
         animatedCharsView.start();
 
-        levelPager.getAdapter().notifyDataSetChanged();
+        if(levelPager.getAdapter() != null)
+            levelPager.getAdapter().notifyDataSetChanged();
         findViewById(R.id.playBtn).setEnabled(true);
 
         if(DBLab.get(MainActivity.this).getLastLvl() - 1 == levelPager.getCurrentItem())

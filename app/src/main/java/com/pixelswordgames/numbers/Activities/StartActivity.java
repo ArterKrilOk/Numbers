@@ -56,17 +56,12 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                gameUpdater.update();
-            }
-        }, 2000);
+        new Handler().postDelayed(() -> gameUpdater.update(), 2000);
     }
 
     private void startFade(){
         ValueAnimator va = ValueAnimator.ofArgb(255, 0);
-        va.setDuration(3000);
+        va.setDuration(2000);
         va.addUpdateListener(animation -> {
             int v = (Integer) animation.getAnimatedValue();
             changingLayout.setBackgroundColor(Color.rgb(v,v,v));

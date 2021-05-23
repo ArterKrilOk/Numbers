@@ -6,18 +6,16 @@ import android.content.Context;
 import com.pixelswordgames.numbers.Utils.ExpressionsUtils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.regex.Pattern;
 
 import static com.pixelswordgames.numbers.Utils.ExpressionsUtils.formatDouble;
 
 public class TaskGenerator {
 
     private int lvl;
-    private Tasks tasks;
+    private final Tasks tasks;
 
     public TaskGenerator(Context context){
         tasks = new Tasks(context);
@@ -42,13 +40,18 @@ public class TaskGenerator {
         switch (c){
             case 'i':
                 return formatDouble(new Random().nextInt((int) (topLimit - bottomLimit)) + bottomLimit);
+            case 'f':
+                return formatDouble(
+                        new Random().nextInt((int) (topLimit - bottomLimit)) + bottomLimit - 1 +
+                              new Random().nextFloat()
+                );
             default:
                 return "0";
         }
     }
 
     public List<Task> generateAllTasks(){
-        List<Task> tsks = new ArrayList<>();
+        List<Task> taskList = new ArrayList<>();
 
         Level level = tasks.getLevel(lvl);
         for(int i = 0; i < level.getCount(); ++i){
@@ -64,14 +67,14 @@ public class TaskGenerator {
             task = task.replace(" ^  2", "²");
             task = task.replace(" ^  3", "³");
 
-            tsks.add(new Task(
+            taskList.add(new Task(
                 task,
                 solution,
                 solution.get(0)
             ));
         }
 
-        return tsks;
+        return taskList;
     }
 
     private List<String> generateSolutions(String task, Level level){
