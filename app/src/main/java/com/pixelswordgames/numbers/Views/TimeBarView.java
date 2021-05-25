@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -27,10 +28,6 @@ public class TimeBarView extends View {
         init();
     }
 
-    public TimeBarView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init();
-    }
 
     private static final int HEIGHT = 40;
     private static final float RADIUS = HEIGHT / 3f;
@@ -41,7 +38,7 @@ public class TimeBarView extends View {
     private Paint innerPaint, paint;
     private long maxMillis, curMillis, time;
     private OnTimeEndListener onTimeEndListener;
-    private Thread thread;
+    private Handler handler;
     private boolean isRunning;
     private float da, a;
 
@@ -54,55 +51,50 @@ public class TimeBarView extends View {
         paint.setStrokeWidth(WIDTH);
         a = 255;
         da = 10f;
+        time = 0;
+        handler = new Handler();
     }
 
     public void start(){
-        if(thread != null)
-            stop();
-
-        thread = new Thread(() -> {
-            while (isRunning) {
-                if(curMillis <= maxMillis / 4f) {
-                    a += da;
-                    if (a > 255) {
-                        a = 255;
-                        da = -da;
-                    }
-                    if (a < 0) {
-                        a = 0;
-                        da = -da;
-                    }
-
-                } else a = 255;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    innerPaint.setColor(Color.argb((int)a,255,255,255));
-                }
-                time += DELAY;
-                curMillis -= DELAY;
-                if(curMillis < 0) {
-                    curMillis = 0;
-                    if(onTimeEndListener != null)
-                        onTimeEndListener.timeOut(time);
-                        stop();
-                }
-                invalidate();
-                try {
-                    Thread.sleep(DELAY);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
         isRunning = true;
-        thread.start();
+
+        createHandler();
+    }
+
+    private void createHandler(){
+        handler.postDelayed(() -> {
+            if(!isRunning)
+                return;
+            if(curMillis <= maxMillis / 4f) {
+                a += da;
+                if (a > 255) {
+                    a = 255;
+                    da = -da;
+                }
+                if (a < 0) {
+                    a = 0;
+                    da = -da;
+                }
+
+            } else a = 255;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                innerPaint.setColor(Color.argb((int)a,255,255,255));
+            }
+            time += DELAY;
+            curMillis -= DELAY;
+            if(curMillis < 0) {
+                curMillis = 0;
+                if(onTimeEndListener != null)
+                    onTimeEndListener.timeOut(time);
+                stop();
+            }
+            invalidate();
+            createHandler();
+        }, DELAY);
     }
 
     public void stop(){
         isRunning = false;
-        if(thread != null)
-            thread.interrupt();
-        thread = null;
     }
 
     public void setMaxMillis(long maxMillis) {
@@ -113,7 +105,7 @@ public class TimeBarView extends View {
     public void setCurMillis(long curMillis) {
         this.curMillis = curMillis;
             if(curMillis > maxMillis)
-                maxMillis = curMillis;
+                setMaxMillis(curMillis);
         invalidate();
     }
 

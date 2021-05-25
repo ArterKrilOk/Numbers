@@ -25,7 +25,7 @@ public class DBLab {
 
     public int getLastLvl(){
         ScoreCursorWrapper cursor = queryFavorite(null,null, DBTables.ScoresTable.COL_LVL);
-        int lvl = 1;
+        int lvl = 0;
         try{
             cursor.moveToFirst();
             while(!cursor.isAfterLast()){

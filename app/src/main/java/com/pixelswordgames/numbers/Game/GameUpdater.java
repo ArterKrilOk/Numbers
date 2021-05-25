@@ -1,7 +1,6 @@
 package com.pixelswordgames.numbers.Game;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
 import com.pixelswordgames.numbers.R;
@@ -13,24 +12,20 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 import retrofit2.internal.EverythingIsNonNull;
 
 public class GameUpdater {
     private static final String UpdateBaseUrl = "https://numbers.pixelsg.space/";
+    private static final String RemoteFile = "tasks.json";
+    private static final String RemoteFilePath = UpdateBaseUrl + RemoteFile;
+    public static final String TasksFile = "tasks";
 
     private final Context context;
     private OnUpdateListener onUpdateListener;
@@ -47,9 +42,14 @@ public class GameUpdater {
         loadTask = new LoadTask();
     }
 
-    public GameUpdater setOnUpdateListener(OnUpdateListener onUpdateListener) {
+    public void setOnUpdateListener(OnUpdateListener onUpdateListener) {
         this.onUpdateListener = onUpdateListener;
-        return this;
+    }
+
+    public static File getTasksFile(Context context){
+        if(!context.getCacheDir().exists())
+            return new File(context.getExternalCacheDir(), TasksFile);
+        return new File(context.getCacheDir(), TasksFile);
     }
 
     public void update(){
@@ -65,7 +65,7 @@ public class GameUpdater {
                 if(onUpdateListener != null) {
                     if (response.isSuccessful() && response.body() != null) {
                         if(response.body().getVersion() > tasks.getVersion())
-                            loadTask.execute(UpdateBaseUrl + "lvls.json");
+                            loadTask.execute(RemoteFilePath);
                         else onUpdateListener.onUpdateFinished(false);
                     } else onUpdateListener.onUpdateFinished(false);
                 }
@@ -99,7 +99,7 @@ public class GameUpdater {
                 onUpdateListener.onProgress(3,context.getString(R.string.updating));
 
             try{
-                File file = new File(context.getCacheDir(), "lvls");
+                File file = getTasksFile(context);
 
                 URL url = new URL(urls[0]);
                 connection = (HttpURLConnection) url.openConnection();

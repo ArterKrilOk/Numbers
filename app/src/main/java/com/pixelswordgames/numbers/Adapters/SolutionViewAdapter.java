@@ -19,20 +19,26 @@ import java.util.List;
 import java.util.Random;
 
 public class SolutionViewAdapter extends RecyclerView.Adapter<SolutionViewAdapter.SolutionViewHolder> {
-    static class SolutionViewHolder extends RecyclerView.ViewHolder {
+    class SolutionViewHolder extends RecyclerView.ViewHolder {
         SolutionView solutionView;
 
         public SolutionViewHolder(@NonNull View itemView) {
             super(itemView);
             solutionView = (SolutionView) itemView;
+            solutionView.setOnClickListener(v -> {
+                if(onItemClickListener != null)
+                    onItemClickListener.onClick(solutionView.getPosition());
+            });
         }
 
-        void setSolution(String value){
-            solutionView.setSolution(value);
+        void setSolution(int position){
+            solutionView.setSolution(solutions.get(position));
+            solutionView.setPosition(position);
         }
     }
 
     private List<String> solutions;
+    private OnItemClickListener onItemClickListener;
 
     public SolutionViewAdapter() {
         solutions = new ArrayList<>();
@@ -47,7 +53,7 @@ public class SolutionViewAdapter extends RecyclerView.Adapter<SolutionViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SolutionViewAdapter.SolutionViewHolder holder, int position) {
-        holder.setSolution(solutions.get(position));
+        holder.setSolution(position);
     }
 
     @Override
@@ -61,8 +67,15 @@ public class SolutionViewAdapter extends RecyclerView.Adapter<SolutionViewAdapte
         notifyDataSetChanged();
     }
 
-
     public String getSolution(int position){
         return solutions.get(position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onClick(int position);
     }
 }

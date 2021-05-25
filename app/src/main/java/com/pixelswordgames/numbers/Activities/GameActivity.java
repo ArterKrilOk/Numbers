@@ -1,15 +1,14 @@
 package com.pixelswordgames.numbers.Activities;
 
+import android.os.Bundle;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
@@ -21,10 +20,9 @@ import com.pixelswordgames.numbers.Dialogs.ResultDialog;
 import com.pixelswordgames.numbers.Game.Level;
 import com.pixelswordgames.numbers.Game.Score;
 import com.pixelswordgames.numbers.Game.Task;
+import com.pixelswordgames.numbers.Game.TaskGenerator;
 import com.pixelswordgames.numbers.Game.Tasks;
 import com.pixelswordgames.numbers.R;
-import com.pixelswordgames.numbers.Utils.RecyclerItemClickListener;
-import com.pixelswordgames.numbers.Game.TaskGenerator;
 import com.pixelswordgames.numbers.Views.TasksCountView;
 import com.pixelswordgames.numbers.Views.TimeBarView;
 
@@ -34,15 +32,17 @@ public class GameActivity extends AppCompatActivity {
 
     private static final String ADS_ID = "ca-app-pub-1950508283527188/9986893746";
 
-    private TimeBarView timeBarView;
-    private TasksCountView tasksCountView;
-    private TextView taskView;
     private SolutionViewAdapter adapter;
     private Level level;
     private List<Task> tasks;
+
     private ResultDialog resultDialog;
+    private TimeBarView timeBarView;
+    private TasksCountView tasksCountView;
+    private TextView taskView;
 
     private int curTask = 0;
+    private boolean isEnabled = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,22 +64,13 @@ public class GameActivity extends AppCompatActivity {
         timeBarView.setCurMillis(level.getTime());
         tasksCountView.setTasks(tasks.size());
 
-        recyclerView.setLayoutManager(new GridLayoutManager(this,3));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                checkSolution(adapter.getSolution(position));
-            }
 
-            @Override
-            public void onLongItemClick(View view, int position) {
+        adapter.setOnItemClickListener(position -> checkSolution(adapter.getSolution(position)));
 
-            }
-        }));
-
-        timeBarView.setOnTimeEndListener(time -> runOnUiThread(() -> showResult(false, time)));
+        timeBarView.setOnTimeEndListener(time  -> showResult(false, time));
         resultDialog.setOnDialogClosedListener(new ResultDialog.OnDialogClosedListener() {
             @Override
             public void onContinue(boolean isWin) {
@@ -88,6 +79,7 @@ public class GameActivity extends AppCompatActivity {
 
             @Override
             public void onADs() {
+                isEnabled = false;
                 showADs();
             }
         });
@@ -95,24 +87,28 @@ public class GameActivity extends AppCompatActivity {
         setTask(curTask);
     }
 
-    private void setTask(int task){
+    private void setTask(int task) {
         taskView.setText(tasks.get(task).text);
-        taskView.setAnimation(AnimationUtils.loadAnimation(this, R.anim.idle_anim));
         adapter.setSolutions(tasks.get(task).solutions);
     }
 
-    private void checkSolution(String solution){
-        if(solution.equals(tasks.get(curTask).correctSolution)){
+    private void checkSolution(String solution) {
+        if (!isEnabled)
+            return;
+        if(curTask >= tasks.size())
+            return;
+        if (solution.equals(tasks.get(curTask).correctSolution)) {
             curTask++;
             tasksCountView.setCurTask(curTask);
             timeBarView.addMillis(level.getSuccessTime());
-            if(curTask == tasks.size()) {
+            if (curTask == tasks.size()) {
                 timeBarView.stop();
                 DBLab.get(this).saveScore(new Score(
                         level.getLvl(),
                         timeBarView.getTime() / 1000f,
                         ""
                 ));
+                isEnabled = false;
                 showResult(true, timeBarView.getTime());
                 return;
             }
@@ -128,10 +124,10 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void showADs(){
+    private void showADs() {
         AdRequest adRequest = new AdRequest.Builder().build();
         RewardedAd.load(this, ADS_ID,
-                adRequest, new RewardedAdLoadCallback(){
+                adRequest, new RewardedAdLoadCallback() {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                         finish();
@@ -140,6 +136,7 @@ public class GameActivity extends AppCompatActivity {
                     @Override
                     public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
                         rewardedAd.show(GameActivity.this, rewardItem -> {
+                            isEnabled = true;
                             timeBarView.setCurMillis(level.getTime());
                             timeBarView.start();
                         });
@@ -147,7 +144,7 @@ public class GameActivity extends AppCompatActivity {
                 });
     }
 
-    private void showResult(boolean isWin, long millis){
+    private void showResult(boolean isWin, long millis) {
         resultDialog.setWin(isWin);
         resultDialog.setTime(millis);
         resultDialog.show();

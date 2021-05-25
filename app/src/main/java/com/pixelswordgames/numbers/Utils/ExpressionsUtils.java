@@ -23,7 +23,7 @@ public class ExpressionsUtils {
             double parse() {
                 nextChar();
                 double x = parseExpression();
-                if (pos < str.length()) throw new RuntimeException("Unexpected: " + (char)ch);
+                if (pos < str.length()) throw new RuntimeException("Unexpected: " + (char)ch + "  Expression: " + str);
                 return x;
             }
 
@@ -64,6 +64,7 @@ public class ExpressionsUtils {
                     x = parseFactor();
                     switch (func) {
                         case "sqrt":
+                        case "√":
                             x = Math.sqrt(x);
                             break;
                         case "sin":
@@ -79,7 +80,7 @@ public class ExpressionsUtils {
                             throw new RuntimeException("Unknown function: " + func);
                     }
                 } else {
-                    throw new RuntimeException("Unexpected: " + (char)ch);
+                    throw new RuntimeException("Unexpected: (" + (char)ch + ") Expression: " + str);
                 }
 
                 if (eat('^')) x = Math.pow(x, parseFactor());
@@ -98,8 +99,40 @@ public class ExpressionsUtils {
 
         String fString = fPart + "";
         if(fString.length() > 5)
-            return new DecimalFormat("#.##").format(value);
+            return new DecimalFormat("#.##")
+                    .format(value)
+                    .replace(',','.')
+                    .replace('/',' ');
 
-        return (value + "").replace(',','.');
+        return (value + "")
+                .replace(',','.')
+                .replace('/',' ');
+    }
+
+    public static String formatExpression(String expression) {
+
+        expression = expression.replace(" ^ 0", "⁰");
+        expression = expression.replace(" ^ 1", "¹");
+        expression = expression.replace(" ^ 2", "²");
+        expression = expression.replace(" ^ 3", "³");
+        expression = expression.replace(" ^ 4", "⁴");
+        expression = expression.replace(" ^ 5", "⁵");
+        expression = expression.replace(" ^ 6", "⁶");
+        expression = expression.replace(" ^ 7", "⁷");
+        expression = expression.replace(" ^ 8", "⁸");
+        expression = expression.replace(" ^ 9", "⁹");
+        expression = expression.replace(" ^  0", "⁰");
+        expression = expression.replace(" ^  1", "¹");
+        expression = expression.replace(" ^  2", "²");
+        expression = expression.replace(" ^  3", "³");
+        expression = expression.replace(" ^  4", "⁴");
+        expression = expression.replace(" ^  5", "⁵");
+        expression = expression.replace(" ^  6", "⁶");
+        expression = expression.replace(" ^  7", "⁷");
+        expression = expression.replace(" ^  8", "⁸");
+        expression = expression.replace(" ^  9", "⁹");
+        expression = expression.replace(" / ", "÷");
+
+        return expression;
     }
 }

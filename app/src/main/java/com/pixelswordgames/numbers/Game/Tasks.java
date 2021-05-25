@@ -14,6 +14,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.pixelswordgames.numbers.Game.GameUpdater.getTasksFile;
+
 public class Tasks {
     @SerializedName("version")
     @Expose
@@ -28,12 +30,10 @@ public class Tasks {
     @Expose
     private List<Level> levels;
 
-    public Tasks() { }
-
     public Tasks(Context context) {
         levels = new ArrayList<>();
 
-        File file = new File(context.getCacheDir(), "lvls");
+        File file = getTasksFile(context);
 
         InputStreamReader inputStreamReader = null;
         if(file.exists()) {
@@ -45,17 +45,18 @@ public class Tasks {
         } else inputStreamReader = new InputStreamReader(context.getResources().openRawResource(R.raw.lvls));
 
 
+        if(inputStreamReader != null) {
+            Gson gson = new Gson();
+            Tasks tasks = gson.fromJson(
+                    inputStreamReader,
+                    Tasks.class
+            );
 
-        Gson gson = new Gson();
-        Tasks tasks = gson.fromJson(
-                inputStreamReader,
-                Tasks.class
-        );
-
-        this.levels = tasks.getLevels();
-        this.channel = tasks.getChannel();
-        this.updatedAt = tasks.getUpdatedAt();
-        this.version = tasks.getVersion();
+            this.levels = tasks.getLevels();
+            this.channel = tasks.getChannel();
+            this.updatedAt = tasks.getUpdatedAt();
+            this.version = tasks.getVersion();
+        }
     }
 
     public Double getVersion() {

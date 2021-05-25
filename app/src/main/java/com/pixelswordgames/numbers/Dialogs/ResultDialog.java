@@ -39,12 +39,6 @@ public class ResultDialog extends AppCompatDialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.result_dialog);
 
-        findViewById(R.id.continueBtn).setOnClickListener(v -> dismiss());
-        ((TextView) findViewById(R.id.resultView)).setText(isWin? R.string.result_complete : R.string.result_failed);
-        findViewById(R.id.adsBtn).setVisibility(isWin? View.GONE : View.VISIBLE);
-        findViewById(R.id.adsBtn).setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.press_me));
-        ((TextView) findViewById(R.id.resultTimeView)).setText(getContext().getString(R.string.result_time, String.format("%.2f", time / 1000f)));
-
         findViewById(R.id.continueBtn).setOnClickListener(v -> {
             adsClicked = false;
             dismiss();
@@ -53,14 +47,26 @@ public class ResultDialog extends AppCompatDialog {
             adsClicked = true;
             dismiss();
         });
+        setContent();
+    }
+
+    private void setContent(){
+       if(findViewById(R.id.resultView) == null)
+           return;
+
+        ((TextView) findViewById(R.id.resultView)).setText(isWin? R.string.result_complete : R.string.result_failed);
+        findViewById(R.id.adsBtn).setVisibility(isWin? View.GONE : View.VISIBLE);
+        ((TextView) findViewById(R.id.resultTimeView)).setText(getContext().getString(R.string.result_time, String.format("%.2f", time / 1000f)));
     }
 
     public void setWin(boolean win) {
         isWin = win;
+        setContent();
     }
 
     public void setTime(long time) {
         this.time = time;
+        setContent();
     }
 
     @Override

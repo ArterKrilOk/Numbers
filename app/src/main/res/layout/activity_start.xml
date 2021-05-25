@@ -25,7 +25,8 @@
             android:layout_height="300dp"
             android:layout_gravity="center"
             android:contentDescription="@string/app_name"
-            app:srcCompat="@drawable/pixelsg_logo" />
+            app:srcCompat="@drawable/pixelsg"
+            android:stateListAnimator="@animator/clickable_animator" />
 
         <ProgressBar
             android:id="@+id/progressBar"

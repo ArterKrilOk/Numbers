@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:background="@drawable/round_bg"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="20dp"
+    android:maxWidth="250dp">
 
 
     <TextView
@@ -41,7 +42,8 @@
             android:layout_weight="1"
             android:text="@string/result_ads"
             android:textAlignment="center"
-            android:textSize="22sp" />
+            android:stateListAnimator="@animator/clickable_animator"
+            android:textSize="18sp" />
 
         <com.pixelswordgames.numbers.Views.ClickableTextView
             android:id="@+id/continueBtn"
@@ -51,6 +53,6 @@
             android:layout_weight="1"
             android:text="@string/result_continue"
             android:textAlignment="center"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 </LinearLayout>

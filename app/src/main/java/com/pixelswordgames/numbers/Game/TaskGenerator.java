@@ -31,9 +31,12 @@ public class TaskGenerator {
         for(char c : pattern.toCharArray())
             if(Character.isLetter(c) && !Character.isDigit(c))
                 expression.append(generateValue(c, topLimit, bottomLimit));
+            else if(Character.isDigit(c))
+                expression.append(c);
             else expression.append(" ").append(c).append(" ");
 
-        return expression.toString();
+
+        return expression.toString().replace(',', '.');
     }
 
     private String generateValue(char c, double topLimit, double bottomLimit) {
@@ -54,24 +57,24 @@ public class TaskGenerator {
         List<Task> taskList = new ArrayList<>();
 
         Level level = tasks.getLevel(lvl);
-        for(int i = 0; i < level.getCount(); ++i){
+        while (taskList.size() < level.getCount()){
+            try {
+                String task = expressionGenerator(
+                        level.getPatterns().get(new Random().nextInt(level.getPatterns().size())),
+                        level.getValuesTopLimit(),
+                        level.getValuesBottomLimit()
+                );
 
-            String task = expressionGenerator(
-                level.getPatterns().get(new Random().nextInt(level.getPatterns().size())),
-                level.getValuesTopLimit(),
-                level.getValuesBottomLimit()
-            );
+                List<String> solution = generateSolutions(task, level);
 
-            List<String> solution = generateSolutions(task, level);
-
-            task = task.replace(" ^  2", "²");
-            task = task.replace(" ^  3", "³");
-
-            taskList.add(new Task(
-                task,
-                solution,
-                solution.get(0)
-            ));
+                taskList.add(new Task(
+                        ExpressionsUtils.formatExpression(task),
+                        solution,
+                        solution.get(0)
+                ));
+            } catch (RuntimeException e){
+                e.printStackTrace();
+            }
         }
 
         return taskList;

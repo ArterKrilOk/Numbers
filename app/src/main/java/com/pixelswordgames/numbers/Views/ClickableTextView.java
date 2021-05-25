@@ -3,16 +3,18 @@ package com.pixelswordgames.numbers.Views;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.pixelswordgames.numbers.R;
 
-public class ClickableTextView extends AppCompatTextView {
+public class ClickableTextView extends AppCompatButton {
     public ClickableTextView(@NonNull Context context) {
         super(context);
         init();
@@ -29,6 +31,8 @@ public class ClickableTextView extends AppCompatTextView {
     }
 
     private void init(){
+        setPadding(0,0,0,0);
+        setBackground(null);
         setTextColor( new ColorStateList(
                 new int[][]{
                         new int[]{android.R.attr.state_pressed}, //1
@@ -39,8 +43,6 @@ public class ClickableTextView extends AppCompatTextView {
                         Color.WHITE
                 }
         ));
-        setClickable(true);
-        setFocusable(true);
     }
 
 }

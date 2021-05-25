@@ -38,8 +38,6 @@ public class StartActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         imageView = findViewById(R.id.imageView);
 
-        changingLayout.setOnAnimationEnd(this::openMainActivity);
-
         gameUpdater.setOnUpdateListener(new GameUpdater.OnUpdateListener() {
             @Override
             public void onProgress(int state, String message) {
@@ -56,7 +54,7 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
-        new Handler().postDelayed(() -> gameUpdater.update(), 2000);
+        new Handler().postDelayed(() -> gameUpdater.update(), 1000);
     }
 
     private void startFade(){

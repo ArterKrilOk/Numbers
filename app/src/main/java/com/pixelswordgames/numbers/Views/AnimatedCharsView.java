@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -30,16 +31,11 @@ public class AnimatedCharsView extends View {
         init();
     }
 
-    public AnimatedCharsView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init();
-    }
-
     private static final int MAX_CHARS = 70;
-    private static final String[] CHARS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "+", "×", "/", "=", "%", "(", "!", "("};
+    private static final String[] CHARS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "+", "×", "÷", "=", "%", "(", "!", "("};
     private List<CharObj> chars;
     private Paint paint;
-    private Thread thread;
+    private Handler handler;
     private boolean isRunning, isDrawing;
 
     private void init(){
@@ -49,6 +45,7 @@ public class AnimatedCharsView extends View {
         paint.setTextAlign(Paint.Align.CENTER);
 
         chars = new ArrayList<>();
+        handler = new Handler();
     }
 
     @Override
@@ -68,33 +65,24 @@ public class AnimatedCharsView extends View {
     }
 
     public void start(){
-        if(thread != null)
-            stop();
-
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (isRunning) {
-                    if(!isDrawing)
-                        update();
-                    invalidate();
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-
         isRunning = true;
-        thread.start();
+
+        startHandler();
+    }
+
+    private void startHandler(){
+        handler.postDelayed(()->{
+            if(!isRunning)
+                return;
+            if(!isDrawing)
+                update();
+            invalidate();
+            startHandler();
+        }, 10);
     }
 
     public void stop(){
         isRunning = false;
-        thread.interrupt();
-        thread = null;
     }
 
     private void update(){

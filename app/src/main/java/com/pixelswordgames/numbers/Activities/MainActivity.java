@@ -5,7 +5,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.animation.AnimationUtils;
 
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
@@ -43,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 new LevelPagerAdapter(new Tasks(this).getLevels())
         );
 
+
         levelPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -64,12 +64,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.titleView).setAnimation(
-                AnimationUtils.loadAnimation(this, R.anim.idle_anim)
-        );
-        findViewById(R.id.playBtn).setAnimation(
-                AnimationUtils.loadAnimation(this, R.anim.press_me)
-        );
         findViewById(R.id.playBtn).setOnClickListener(v -> startGame(levelPager.getCurrentItem() + 1));
 
         levelPager.setCurrentItem(DBLab.get(MainActivity.this).getLastLvl(), true);
@@ -98,8 +92,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void startGame(int lvl){
         findViewById(R.id.playBtn).setEnabled(false);
-        Intent intent = new Intent(MainActivity.this, GameActivity.class);
-        intent.putExtra("lvl", lvl);
+        Intent intent = new Intent(MainActivity.this, GameActivity.class)
+                .putExtra("lvl", lvl);
         startActivity(intent);
     }
 }
